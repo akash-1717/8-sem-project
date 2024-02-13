@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
 import Link from '@mui/material/Link';
-import SignInSide from './SignIn';
 
 function Copyright(props) {
   return (
@@ -61,7 +60,7 @@ export default function SignUp() {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 8,
+            marginTop: 15,
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -130,11 +129,13 @@ export default function SignUp() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {/* <Link href="/interests" sx={{color: 'white'}}> */}
+                Sign Up
+              {/* </Link> */}
             </Button>
             <Grid container justifyContent="flex-end">
               <Grid item>
-                <Link href="#">
+                <Link href="/signin">
                   Already have an account? Sign in
                 </Link>
               </Grid>

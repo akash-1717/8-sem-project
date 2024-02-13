@@ -12,7 +12,6 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
-import SignUp from './SignUp';
 
 function Copyright(props) {
   return (
@@ -76,7 +75,7 @@ export default function SignInSide() {
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
           <Box
             sx={{
-              my: 8,
+              my: 20,
               mx: 4,
               display: 'flex',
               flexDirection: 'column',
@@ -129,7 +128,7 @@ export default function SignInSide() {
                   </Link>
                 </Grid>
                 <Grid item>
-                  <Link href="#">
+                  <Link href="/signup">
                     {"Don't have an account? Sign Up"}
                   </Link>
                 </Grid>

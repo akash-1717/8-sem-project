@@ -158,6 +158,7 @@ app.post("/imageUpload", upload.single("photo"), (req, res) => {
       console.error("Error inserting image into database:", err);
       return res.status(500).json({ message: "Error uploading image" });
     }
+    console.log("Successfully inserted image into database!");
     res.status(200).json({ message: "Image uploaded successfully" });
   });
 });

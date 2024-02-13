@@ -11,8 +11,8 @@ import TitlebarBelowMasonryImageList  from "./components/Gallery1";
 // import JsonData from "./data/data.json";
 // import SmoothScroll from "smooth-scroll";
 import "./App.css";
-import SignUp from "./components/SignUp";
-import SignInSide from "./components/SignIn";
+// import SignUp from "./components/SignUp";
+// import SignInSide from "./components/SignIn";
 // import SubmitReview from "./components/SubmitReview";
 // import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
@@ -20,9 +20,8 @@ import SignInSide from "./components/SignIn";
 import { BrowserRouter ,Route, Routes } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import ImageUpload from "./components/ImageUpload";
+import SigninComponent from "./components/SigninComponent";
 import Interests from "./components/Interests";
-// import Interests from "./components/Interests";
-// import SigninComponent from "./components/SigninComponent";
 
 // export const scroll = new SmoothScroll('a[href*="#"]', {
 //   speed: 1000,
@@ -54,8 +53,7 @@ const App = () => {
           <Route exact path="/features" element={<Features />} />
           <Route exact path="/gallery" element={<TitlebarBelowMasonryImageList />} />
           <Route exact path="/imageUpload" element={<ImageUpload />} />
-          <Route exact path="/signin" element={<SignInSide />} />
-          <Route exact path="/signup" element={<SignUp />} />
+          <Route exact path="/signin" element={<SigninComponent />} />
           <Route exact path="/interests" element={<Interests />} />
         </Routes>
       </div>

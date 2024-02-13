@@ -3,13 +3,6 @@ import { Link } from 'react-router-dom';
 
 
 export const Navigation = (props) => {
-  // const [anchorElUser, setAnchorElUser] = React.useState(null);
-  // const handleOpenUserMenu = (event) => {
-  //   setAnchorElUser(event.currentTarget);
-  // };
-  // const handleCloseUserMenu = () => {
-  //   setAnchorElUser(null);
-  // };
   return (
     <nav id="menu" className="navbar navbar-default navbar-fixed-top">
       <div className="container">
@@ -29,7 +22,6 @@ export const Navigation = (props) => {
             <span>
               <Link to="/" className="navbar-brand page-scroll">
                 PAINTORA
-                {/* <img src="img/logos/logo-white.png" width={170}/> */}
               </Link>
             </span>
         </div>
@@ -69,27 +61,11 @@ export const Navigation = (props) => {
                 Contact
               </a>
             </li>
-            {/* <li>
-              <AccountBoxIcon fontSize="large" />
-              <Menu
-                id="menu-appbar"
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>My account</MenuItem>
-              </Menu>
-            </li> */}
+            <li>
+              <Link to="/signin" className="page-scroll">
+                Sign In
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
