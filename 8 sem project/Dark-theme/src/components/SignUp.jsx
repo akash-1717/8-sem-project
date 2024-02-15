@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, {useState} from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -12,6 +12,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider, responsiveFontSizes } from '@mui/material/styles';
 import Link from '@mui/material/Link';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 function Copyright(props) {
   return (
@@ -45,14 +47,67 @@ let darkTheme = createTheme({
 darkTheme = responsiveFontSizes(darkTheme);
 
 export default function SignUp() {
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+
+
+
+  const [fname, setFname] = useState("");
+  const [lname, setLname] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPwd] = useState("");
+  const [signupMessage, setSignupMessage] = useState("");
+
+  const history = useNavigate();
+
+  const setFnameHandler = (e) => {
+      setFname(e.target.value);
+  }
+
+  const setLnameHandler = (e) => {
+      setLname(e.target.value);
+  }
+
+  const setEmailHandler = (e) => {
+      setEmail(e.target.value);
+  }
+
+  const setPwdHandler = (e) => {
+      setPwd(e.target.value);
+  }
+
+  async function addSignUpData(e) {
+    e.preventDefault();
+
+    // Retrieve form data
+    const formData = new FormData();
+    formData.append("fname", fname);
+    formData.append("lname", lname);
+    formData.append("email", email); 
+    formData.append("password", password);
+
+
+    const config = {
+        headers: {
+            "Content-Type": "multipart/form-data"
+        }
+    };
+
+    try {
+        // Make POST request
+        const res = await axios.post("/signup", formData, config);
+        if (res.status === 200) {
+            console.log("Form submitted successfully!");
+            // Redirect user if needed
+            setSignupMessage(res.data.message);
+            setTimeout(() => {
+              history("/signin")
+            }, 2000);
+        } else {
+            console.log("Error:", res.data);
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+  }
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -72,7 +127,7 @@ export default function SignUp() {
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          <Box component="form" noValidate onSubmit={addSignUpData} sx={{ mt: 3 }}>
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -83,6 +138,7 @@ export default function SignUp() {
                   id="firstName"
                   label="First Name"
                   autoFocus
+                  onChange={setFnameHandler}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -93,6 +149,7 @@ export default function SignUp() {
                   label="Last Name"
                   name="lastName"
                   autoComplete="family-name"
+                  onChange={setLnameHandler}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -103,6 +160,7 @@ export default function SignUp() {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  onChange={setEmailHandler}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -113,7 +171,7 @@ export default function SignUp() {
                   label="Password"
                   type="password"
                   id="password"
-                  autoComplete="new-password"
+                  onChange={setPwdHandler}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -133,6 +191,7 @@ export default function SignUp() {
                 Sign Up
               {/* </Link> */}
             </Button>
+            <div id='success'>{signupMessage}</div>
             <Grid container justifyContent="flex-end">
               <Grid item>
                 <Link href="/signin">

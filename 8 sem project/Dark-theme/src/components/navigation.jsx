@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from 'react-router-dom';
+import axios from "axios";
 
+export const Navigation = (props) => {  
 
-export const Navigation = (props) => {
   return (
     <nav id="menu" className="navbar navbar-default navbar-fixed-top">
       <div className="container">
@@ -63,7 +64,7 @@ export const Navigation = (props) => {
             </li>
             <li>
               <Link to="/signin" className="page-scroll">
-                Sign In
+                Sign in
               </Link>
             </li>
           </ul>

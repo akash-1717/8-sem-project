@@ -1,36 +1,73 @@
 import { useState } from "react";
-import emailjs from "emailjs-com";
 import React from "react";
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Form from 'react-bootstrap/Form';
+import Button from "react-bootstrap/esm/Button";
 
-const initialState = {
-  name: "",
-  email: "",
-  message: "",
-};
 export const Contact = (props) => {
-  const [{ name, email, message }, setState] = useState(initialState);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setState((prevState) => ({ ...prevState, [name]: value }));
-  };
-  const clearState = () => setState({ ...initialState });
 
-  const handleSubmit = (e) => {
+
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [x, setX] = useState("");
+
+  const history = useNavigate();
+
+  const setNameHandler = (e) => {
+      setName(e.target.value);
+  }
+
+  const setEmailHandler = (e) => {
+      setEmail(e.target.value);
+  }
+
+  const setMessageHandler = (e) => {
+      setMessage(e.target.value);
+  }
+
+  async function addContactData(e) {
     e.preventDefault();
-    console.log(name, email, message);
-    emailjs
-      .sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", e.target, "YOUR_USER_ID")
-      .then(
-        (result) => {
-          console.log(result.text);
-          clearState();
-        },
-        (error) => {
-          console.log(error.text);
+
+    // Retrieve form data
+    const formData = new FormData();
+    formData.append("name", name); // Assuming 'name', 'email', 'message' are obtained from form inputs
+    formData.append("email", email); 
+    formData.append("message", message);
+
+    // Assuming 'setX' is a state setter function to update some state
+    setX("Sent successfully");
+
+    const config = {
+        headers: {
+            "Content-Type": "multipart/form-data"
         }
-      );
-  };
+    };
+
+    try {
+        // Make POST request
+        const res = await axios.post("/contact", formData, config);
+        if (res.status === 200) {
+            console.log("Form submitted successfully!");
+            // Redirect user if needed
+            setName("")
+            setEmail("")
+            setMessage("")
+            history("/");
+        } else {
+            console.log("Error:", res.data);
+        }
+    } catch (error) {
+        console.error("An error occurred:", error);
+    }
+  }
+  
+
+
+
   
   return (
     <div>
@@ -45,40 +82,45 @@ export const Contact = (props) => {
                   get back to you as soon as possible.
                 </p>
               </div>
-              <form name="sentMessage" validate onSubmit={handleSubmit}>
+              {/* <form name="sentMessage"> */}
+              <Form>
                 <div className="row">
                   <div className="col-md-6">
-                    <div className="form-group">
-                      <input
+                    <Form.Group>
+                      <Form.Control
                         style={{borderRadius: '0.5rem'}}
                         type="text"
                         id="name"
                         name="name"
-                        className="form-control"
+                        value={name}
+                        // className="form-control"
                         placeholder="Name"
                         required
-                        onChange={handleChange}
+                        onChange={setNameHandler}
+                        autoComplete="off"
                       />
                       <p className="help-block text-danger"></p>
-                    </div>
+                    </Form.Group>
                   </div>
                   <div className="col-md-6">
-                    <div className="form-group">
-                      <input
+                    <Form.Group>
+                      <Form.Control
                         style={{borderRadius: '0.5rem'}}
                         type="email"
                         id="email"
                         name="email"
-                        className="form-control"
+                        value={email}
+                        // className="form-control"
                         placeholder="Email"
                         required
-                        onChange={handleChange}
+                        onChange={setEmailHandler}
+                        autoComplete="off"
                       />
                       <p className="help-block text-danger"></p>
-                    </div>
+                    </Form.Group>
                   </div>
                 </div>
-                <div className="form-group">
+                <Form.Group>
                   <textarea
                     style={{borderRadius: '0.5rem', resize: 'none'}}
                     name="message"
@@ -86,18 +128,19 @@ export const Contact = (props) => {
                     className="form-control"
                     rows="4"
                     placeholder="Message"
+                    value={message}
                     required
-                    onChange={handleChange}
+                    onChange={setMessageHandler}
                   ></textarea>
                   <p className="help-block text-danger"></p>
-                </div>
-                <div id="success"></div>
-                <button type="submit" className="btn btn-custom btn-lg">
+                </Form.Group>
+                <div id="success"><h1>{x}</h1></div>
+                <Button type="submit" className="btn btn-custom btn-lg" onClick={addContactData}>
                   Send Message
-                </button>
-              </form>
+                </Button>
+                </Form>
             </div>
-          </div>
+          </div> 
           <div className="col-md-3 col-md-offset-1 contact-info">
             <div className="contact-item">
               <h3>Contact Info</h3>
