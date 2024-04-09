@@ -39,6 +39,7 @@ const ImgCmp = () => {
       <ImageList variant="masonry" cols={3} gap={8}>
         {images.map((image, index) => {
           const { width, height } = getRandomDimension();
+          console.log(image.user_name);
           return (
             <ImageListItem key={index}>
               <img
@@ -46,7 +47,7 @@ const ImgCmp = () => {
                 alt={`Image ${index}`}
                 style={{ width: `${width}px`, height: `${height}px`, objectFit: 'cover' }} // Remove margin and padding
               />
-              <ImageListItemBar position="below" title={image.author} />
+              <ImageListItemBar position="below" title={image.user_name} />
             </ImageListItem>
           );
         })}

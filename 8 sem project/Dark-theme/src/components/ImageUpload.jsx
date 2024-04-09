@@ -36,7 +36,7 @@ const ImageUpload = () => {
       try {
           const res = await axios.post("/imageUpload", formData, config);
           if (res.status === 200) {
-              history("/");
+              history("/gallery");
           } else {
               console.log("Error:", res.data);
           }

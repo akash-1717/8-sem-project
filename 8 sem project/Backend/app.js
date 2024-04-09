@@ -71,7 +71,7 @@ db.connect(function(err) {
         if (tables[i].TABLE_NAME == "user_cred") flag7 = 1;
       }
       if (!flag7) {
-        const sql = "CREATE TABLE user_cred (id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(50), lname VARCHAR(50), uemail VARCHAR(50), pwd VARCHAR(50));";
+        const sql = "CREATE TABLE user_cred (id INT AUTO_INCREMENT PRIMARY KEY, fname VARCHAR(50), lname VARCHAR(50), uemail VARCHAR(50), pwd VARCHAR(50), interests VARCHAR(100));";
         db.query(sql, (err, result) => {
           if (err) console.log(err);
           else {
@@ -131,14 +131,17 @@ app.post("/imageUpload", upload.single("photo"), (req, res) => {
 
 // Route to get images
 app.get("/getimages", (req, res) => {
-  const sql = "SELECT image FROM paintings";
+  const sql = "SELECT image,user_name FROM paintings";
   db.query(sql, (err, results) => {
     if(err) {
       console.error("Error fetching images:", err);
       return res.status(500).json({ message: "Error fetching images" });
     } 
+    // console.log(Object.keys(results[0]));
+
     const images = results.map(result => ({
-      imageData: result.image.toString('base64') 
+      imageData: result.image.toString('base64'),
+      user_name: result.user_name
     }));
     res.json(images);
   });
@@ -159,9 +162,26 @@ app.post('/contact', upload.single("photo"), (req, res) => {
   });
 });
 
+//saving user interests
+
+app.post('/interests', upload.single("photo"), (req, res) => {
+  const { intr, email } = req.body;
+  // Here you can save the email and interests to your database or perform any other necessary actions
+  console.log('Received interests:', intr, 'from', email);
+  const query = "UPDATE user_cred SET interests = ? WHERE uemail = ?";
+  db.query(query, [intr, email], (err, result) => {
+    if (err) {
+      console.error("Error inserting data into database:", err);
+      return res.status(500).json({ message: "Error uploading form" });
+    }
+    console.log("Successfully inserted data into database!");
+    res.status(200).json({ message: 'Interests saved successfully' });
+  });
+});
+
 // Handling user signup
 app.post("/signup", upload.single("photo"), (req, res) => {
-  const { fname, lname, email, password } = req.body;
+  const { fname, lname, email, password} = req.body;
   
   // Checking if email already exists
   const checkQuery = "SELECT COUNT(*) AS count FROM user_cred WHERE uemail = ?";

@@ -48,7 +48,7 @@ darkTheme = responsiveFontSizes(darkTheme);
 
 export default function SignUp() {
 
-
+  
 
   const [fname, setFname] = useState("");
   const [lname, setLname] = useState("");
@@ -56,7 +56,7 @@ export default function SignUp() {
   const [password, setPwd] = useState("");
   const [signupMessage, setSignupMessage] = useState("");
 
-  const history = useNavigate();
+  const navigate = useNavigate();
 
   const setFnameHandler = (e) => {
       setFname(e.target.value);
@@ -77,6 +77,8 @@ export default function SignUp() {
   async function addSignUpData(e) {
     e.preventDefault();
 
+
+
     // Retrieve form data
     const formData = new FormData();
     formData.append("fname", fname);
@@ -94,14 +96,26 @@ export default function SignUp() {
     try {
         // Make POST request
         const res = await axios.post("/signup", formData, config);
-        if (res.status === 200) {
+        if(res.data.message === "Email already exists, redirecting to sign in..."){
+          setTimeout(() => {
+            navigate("/signin");
+          }, 2000);
+        }
+        else if (res.status === 200) {
             console.log("Form submitted successfully!");
             // Redirect user if needed
             setSignupMessage(res.data.message);
             setTimeout(() => {
-              history("/signin")
+              navigate(`/interests?email=${encodeURIComponent(email)}`);
             }, 2000);
-        } else {
+          }
+        
+       else if(res.data.message === "Error checking email existence. Try again after sometime"){
+          setTimeout(()=>{
+            navigate("/signin");
+          },3000);
+        }
+       else {
             console.log("Error:", res.data);
         }
     } catch (error) {

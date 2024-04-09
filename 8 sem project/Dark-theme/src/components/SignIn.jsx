@@ -47,6 +47,7 @@ let darkTheme = createTheme({
 darkTheme = responsiveFontSizes(darkTheme);
 
 export default function SignInSide() {
+  const navigate = useNavigate();
   
   const [email, setEmail] = useState("");
   const [password, setPwd] = useState("");
@@ -78,18 +79,33 @@ export default function SignInSide() {
     };
 
     try {
-        // Make POST request
-        const res = await axios.post("/signin", formData, config);
-        if (res.status === 200) {
-            console.log("Form submitted successfully!");
-            // Redirect user if needed
-            setSigninMessage(res.data.message);
-            setTimeout(() => {
-              history("/signup")
-            }, 2000);
-        } else {
-            console.log("Error:", res.data);
+      const res = await axios.post("/signin", formData, config);
+      if (res.status === 200) {
+        console.log("Form submitted successfully!");
+  
+        // Redirect to the appropriate page based on response
+        if (res.data.message === "Signin successful") {
+          // Redirect to the desired page after successful sign-in
+          setSigninMessage("Sign In successful. Redirecting to the Gallery...");
+          setTimeout(()=>{
+            navigate("/gallery");
+          },1000);
+       
         }
+        else if(res.data.message === "Email not found, redirecting to sign up..."){
+          setSigninMessage("Email not found, redirecting to sign up...");
+          setTimeout(() => {
+            navigate("/signup");
+          }, 2000);
+          
+        } else {
+          // Display error or other messages
+          setSigninMessage(res.data.message);
+        }
+      } else {
+        console.log("Error:", res.data);
+        setSigninMessage(res.data.message || "An error occurred");
+      }
     } catch (error) {
         console.error("An error occurred:", error);
     }

@@ -4,7 +4,7 @@ import { Header } from "./components/header";
 import { Features } from "./components/features";
 import About from "./components/About"
 // import { Services } from "./components/services";
-import TitlebarBelowMasonryImageList  from "./components/Gallery1";
+import Gallery1  from "./components/Gallery1";
 // import { Testimonials } from "./components/testimonials";
 // import { Team } from "./components/Team";
 // import { Contact } from "./components/contact";
@@ -52,7 +52,7 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route exact path="/about" element={<About />} />
           <Route exact path="/features" element={<Features />} />
-          <Route exact path="/gallery" element={<TitlebarBelowMasonryImageList />} />
+          <Route exact path="/gallery" element={<Gallery1 />} />
           <Route exact path="/imageUpload" element={<ImageUpload />} />
           <Route exact path="/signin" element={<SignInSide />} />
           <Route exact path="/signup" element={<SignUp />} />
